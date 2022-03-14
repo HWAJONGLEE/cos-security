@@ -20,16 +20,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeHttpRequests()
-                .antMatchers("/user/**").authenticated()
+                .antMatchers("/user/**").authenticated() //인증만 되면 들어갈 수 있는 주소
                 .antMatchers("/manager/**").hasAnyRole("ROLE_ADMIN" , "ROLE_MANAGER")
                 .antMatchers("/admin/**").hasRole("ROLE_ADMIN")
-                .anyRequest().permitAll()
+                .anyRequest().permitAll() // 그 이외에는 전부 허용 인증 및 role이 없이도 허용
                 .and()
                 .formLogin()
                 //.usernameParameter("userEmail") form에 아이디 키 값 파라미터를 시큐리티username으로 변경 해줌 ex userMail => username
                 .loginPage("/loginForm") //로그인 페이지 경로
                 .loginProcessingUrl("/login") // /login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행함
-                .defaultSuccessUrl("/");
-
+                .defaultSuccessUrl("/"); // 로그인 후 defalut로 들어 가게 될 주소
     }
 }
