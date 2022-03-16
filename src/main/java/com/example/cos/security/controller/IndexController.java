@@ -3,6 +3,8 @@ package com.example.cos.security.controller;
 import com.example.cos.security.model.User;
 import com.example.cos.security.repository.UserRepository;
 import net.bytebuddy.implementation.bind.MethodDelegationBinder;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,4 +65,15 @@ public class IndexController {
         return "redirect:/loginForm";
     }
 
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/info")
+    public @ResponseBody String info() {
+        return "개인정보";
+    }
+
+    @PreAuthorize("hasRole('ROLE_MANAGER')")// 함수실행전 권한 설정
+    @GetMapping("/data")
+    public @ResponseBody String data() {
+        return "데이터정보";
+    }
 }
